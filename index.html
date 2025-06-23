@@ -228,26 +228,14 @@
             text-align: center;
         }
         
-        .attention-text {
-            color: red;
+        /* ▼▼▼ 指示通りに修正したCSS ▼▼▼ */
+        .call-to-action {
+            font-size: 1.5em;
             font-weight: bold;
-            background-color: lightyellow;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.1em;
-            line-height: 1.5;
-            border: 2px dashed red;
-            animation: blink-animation 1.5s infinite;
+            color: red;
+            margin-bottom: 10px;
         }
 
-        @keyframes blink-animation {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(1.02); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        
         .completion-btn {
             background: linear-gradient(45deg, #28a745, #20c997);
             color: white;
@@ -261,9 +249,33 @@
             transition: all 0.3s ease;
             width: 100%;
             max-width: 300px;
+            animation: pulse-button 2s infinite; /* ボタンをアニメーション */
+        }
+
+        @keyframes pulse-button {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            }
         }
         
+        .supplementary-note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+        }
+        /* ▲▲▲ ここまで ▲▲▲ */
+        
         .completion-btn:hover {
+            animation-play-state: paused; 
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
@@ -422,8 +434,8 @@
                     </div>
                     
                     <div class="completion-section">
-                        <div class="attention-text">
-                            ⬇︎最後にタップ<br>※返却確認のため必ず押してね
+                        <div class="call-to-action">
+                            ⬇︎ 最後に下のボタンをタップ ⬇︎
                         </div>
                         <button id="completionBtn" class="completion-btn">
                             🔑 深夜キーを返却し、ポストを閉めました ✅
@@ -433,7 +445,10 @@
                             <p>返却完了を確認いたしました。</p>
                             <p>またのご利用をお待ちしております。</p>
                         </div>
-                    </div>
+                        <p class="supplementary-note">
+                            ※返却確認のため、必ず押してください。
+                        </p>
+                        </div>
                 </div>
             </div>
         </div>
@@ -490,10 +505,12 @@
             });
 
             this.disabled = true;
+            this.style.animation = 'none'; /* クリック後はアニメーション停止 */
             this.style.background = '#6c757d';
             this.innerHTML = '✅ 返却完了済み';
             
-            document.querySelector('.attention-text').style.display = 'none';
+            document.querySelector('.call-to-action').style.display = 'none';
+            document.querySelector('.supplementary-note').style.display = 'none';
 
             document.getElementById('completionMessage').style.display = 'block';
         });
