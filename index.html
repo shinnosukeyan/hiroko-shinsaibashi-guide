@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深夜利用案内 - レンタルスペース</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+        
+        .time-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .situation {
+            margin: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .situation-header {
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: white;
+            text-align: center;
+        }
+        
+        .open .situation-header {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+        }
+        
+        .closed .situation-header {
+            background: linear-gradient(45deg, #e17055, #fdcb6e);
+        }
+        
+        .situation-content {
+            background: white;
+            padding: 20px;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .key-info {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .key-info h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .key-info h4::before {
+            content: "🔑";
+            margin-right: 8px;
+        }
+        
+        .location-info {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .location-info h4 {
+            color: #f57c00;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .location-info h4::before {
+            content: "📍";
+            margin-right: 8px;
+        }
+        
+        .map-link {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .map-link:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .post-steps {
+            background: #f3e5f5;
+            border: 1px solid #9c27b0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .post-steps h4 {
+            color: #7b1fa2;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-steps h4::before {
+            content: "📮";
+            margin-right: 8px;
+        }
+        
+        .code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .thank-you {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        
+        .real-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 15px auto;
+            display: block;
+            border: 3px solid #e3f2fd;
+        }
+        
+        .image-caption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0 15px 0;
+            font-weight: bold;
+        }
+        
+        .step-with-image {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .video-section {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .video-section h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .video-section h4::before {
+            content: "🎥";
+            margin-right: 8px;
+        }
+        
+        .completion-section {
+            background: #f8f9fa;
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .completion-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .completion-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .completion-btn:active {
+            transform: translateY(0);
+        }
+        
+        .completion-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                border-radius: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.2em;
+            }
+            
+            .situation {
+                margin: 15px;
+            }
+        }
+        
+        #password-message {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="password-message">深夜利用案内をご覧いただくため、パスワードを入力してください:</div>
+    <div id="main-content" style="display: none;">
+        <div class="container">
+            <div class="header">
+                <h1>🏢 ひろこばぁちゃんのスペース<br>心斎橋店</h1>
+                <p>退室時のご案内</p>
+            </div>
+            
+            <div class="time-notice">
+                ⏰ 深夜23時頃より建物入口が施錠される場合があります
+            </div>
+            
+            <div class="situation open">
+                <div class="situation-header">
+                    ✅ 1階建物入口が開いている場合
+                </div>
+                <div class="situation-content">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        5階スペース入口の鍵を施錠してください
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        そのままご退室いただけます
+                    </div>
+                </div>
+            </div>
+            
+            <div class="situation closed">
+                <div class="situation-header">
+                    🔒 1階建物入口が閉まっている場合
+                </div>
+                <div class="situation-content">
+                    <p><strong>大変お手数ですが、以下の手順で深夜キーをご利用ください。</strong></p>
+                    
+                    <div class="key-info">
+                        <h4>深夜キーの場所</h4>
+                        <p>5階スペース前のキーボックス（スペース入口の鍵とは別のもの）</p>
+                        <img src="01.jpeg" alt="キーボックスの場所" class="real-image">
+                        <div class="image-caption">📷 5階スペース前のキーボックス</div>
+                        
+                        <p>暗証番号：<span class="code">4646</span></p>
+                        <img src="02.jpeg" alt="暗証番号入力" class="real-image">
+                        <div class="image-caption">📷 暗証番号4646を入力</div>
+                        
+                        <p>鈴に「深夜キー」と記載されています</p>
+                        <img src="03.jpeg" alt="深夜キーの目印" class="real-image">
+                        <div class="image-caption">📷 「深夜キー」の鈴が目印</div>
+                    </div>
+                    
+                    <div class="step-with-image">
+                        <span class="step-number">1</span>
+                        <strong>深夜キーで建物入口（シャッター横の扉）を施錠</strong>
+                        <img src="04.jpeg" alt="建物入口の扉" class="real-image">
+                        <div class="image-caption">📷 建物入口の扉を施錠してください</div>
+                    </div>
+                    
+                    <div class="location-info">
+                        <h4>鍵の返却場所</h4>
+                        <p><strong>ミヤプラザ心斎橋</strong>（ラーメン一蘭心斎橋店のすぐ横）</p>
+                        <p>徒歩約3分</p>
+                        <img src="05.jpeg" alt="ミヤプラザ心斎橋" class="real-image">
+                        <div class="image-caption">📷 ミヤプラザ心斎橋の建物</div>
+                        <a href="https://maps.app.goo.gl/8XshHNJmmzgweTgb8" target="_blank" class="map-link">
+                            🗺️ Googleマップで確認
+                        </a>
+                    </div>
+                    
+                    <div class="step-with-image">
+                        <span class="step-number">2</span>
+                        <strong>506ホワイトガーデン心斎橋のポストを開ける</strong><br>
+                        暗証番号：<span class="code">左8 → 左8 → 右4</span>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h4>操作手順動画</h4>
+                        <p>ポストの開け方を動画でもご確認いただけます</p>
+                        <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%; margin: 10px 0;">
+                            <iframe 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px;"
+                                src="https://www.youtube.com/embed/u5sL2Ui-OT0?si=tXaPV1KNQtPyzpQk" 
+                                title="ポスト操作手順動画" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p style="font-size: 0.9em; color: #666; text-align: center;">
+                            💡 暗証番号：左8 → 左8 → 右4 の操作手順
+                        </p>
+                    </div>
+                    
+                    <div class="step-with-image">
+                        <span class="step-number">3</span>
+                        <strong>鍵をケースに入れる</strong>
+                        <img src="06.jpeg" alt="ケースに鍵を入れる" class="real-image">
+                        <div class="image-caption">📷 青いケースに深夜キーを入れてください</div>
+                    </div>
+                    <div class="step-with-image">
+                        <span class="step-number">4</span>
+                        <strong>ケースを奥に入れる</strong>
+                        <img src="07.jpeg" alt="ポスト内部にケースを入れる" class="real-image">
+                        <div class="image-caption">📷 ポスト内部の奥までしっかり入れてください</div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">5</span>
+                        ポストの暗証番号を<span class="code">0</span>に戻す
+                    </div>
+                    
+                    <div class="completion-section">
+                        <button id="completionBtn" class="completion-btn">
+                            🔑 深夜キーを返却し、ポストを閉めました ✅
+                        </button>
+                        <div id="completionMessage" class="completion-message" style="display: none;">
+                            <p>✅ <strong>ありがとうございました！</strong></p>
+                            <p>返却完了を確認いたしました。</p>
+                            <p>またのご利用をお待ちしております。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="thank-you">
+                <h3>🙏 ありがとうございました</h3>
+                <p>またのご利用をお待ちしております</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // パスワード保護機能
+        const correctPassword = "0621";
+        
+        function checkPassword() {
+            const password = prompt("深夜利用案内をご覧いただくため、パスワードを入力してください:");
+            
+            if (password === correctPassword) {
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('password-message').style.display = 'none';
+                // パスワードをセッションに保存（ブラウザを閉じるまで有効）
+                sessionStorage.setItem('authenticated', 'true');
+            } else if (password !== null) {
+                alert("パスワードが正しくありません。");
+                checkPassword();
+            }
+        }
+        
+        // ページ読み込み時の処理
+        window.addEventListener('load', function() {
+            // 既に認証済みかチェック
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('password-message').style.display = 'none';
+            } else {
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('password-message').style.display = 'block';
+                checkPassword();
+            }
+            
+            // フェードイン効果
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        
+        // 完了ボタンの処理
+        document.getElementById('completionBtn').addEventListener('click', function() {
+            // 完了情報を収集
+            const completionData = {
+                timestamp: new Date().toLocaleString('ja-JP', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: 'Asia/Tokyo'
+                }),
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                screenResolution: screen.width + 'x' + screen.height,
+                viewportSize: window.innerWidth + 'x' + window.innerHeight,
+                referrer: document.referrer || 'Direct Access'
+            };
+
+            // Formspreeに送信
+            const formData = new FormData();
+            formData.append('完了日時', completionData.timestamp);
+            formData.append('ブラウザ情報', completionData.userAgent);
+            formData.append('端末情報', completionData.platform);
+            formData.append('言語設定', completionData.language);
+            formData.append('画面解像度', completionData.screenResolution);
+            formData.append('表示サイズ', completionData.viewportSize);
+            formData.append('アクセス元', completionData.referrer);
+            formData.append('_subject', 'ひろこばぁちゃんのスペース - 深夜キー返却完了通知');
+
+            // Formspreeに送信
+            fetch('https://formspree.io/f/myzjnklr', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    console.log('送信完了');
+                }
+            }).catch(error => {
+                console.log('送信エラー:', error);
+            });
+
+            // ボタンを無効化
+            this.disabled = true;
+            this.style.background = '#6c757d';
+            this.innerHTML = '✅ 返却完了済み';
+
+            // 完了メッセージを表示
+            document.getElementById('completionMessage').style.display = 'block';
+        });
+        
+        // タッチデバイスでのユーザビリティ向上
+        document.addEventListener('touchstart', function() {}, {passive: true});
+    </script>
+</body>
+</html>
