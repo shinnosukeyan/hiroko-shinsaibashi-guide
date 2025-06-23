@@ -496,7 +496,7 @@
             const formData = new FormData();
             formData.append('完了日時', completionData.timestamp);
             formData.append('ブラウザ情報', completionData.userAgent);
-            formData.append('_subject', 'ひろこばぁちゃんのスペース - 深夜キー返却完了通知');
+            formData.append('_subject', '【通知】深夜キーがポストに返却されました');
 
             fetch('https://formspree.io/f/myzjnklr', {
                 method: 'POST',
