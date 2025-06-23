@@ -160,26 +160,6 @@
             box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
         }
         
-        .post-steps {
-            background: #f3e5f5;
-            border: 1px solid #9c27b0;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-        
-        .post-steps h4 {
-            color: #7b1fa2;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .post-steps h4::before {
-            content: "📮";
-            margin-right: 8px;
-        }
-        
         .code {
             background: #2c3e50;
             color: #ecf0f1;
@@ -189,15 +169,6 @@
             font-weight: bold;
             display: inline-block;
             margin: 5px;
-        }
-        
-        .thank-you {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin: 20px;
-            border-radius: 10px;
         }
         
         .real-image {
@@ -255,6 +226,26 @@
             padding: 20px;
             margin: 25px 0;
             text-align: center;
+        }
+        
+        .attention-text {
+            color: red;
+            font-weight: bold;
+            background-color: lightyellow;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.5;
+            border: 2px dashed red;
+            animation: blink-animation 1.5s infinite;
+        }
+
+        @keyframes blink-animation {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
         }
         
         .completion-btn {
@@ -431,6 +422,9 @@
                     </div>
                     
                     <div class="completion-section">
+                        <div class="attention-text">
+                            ⬇︎最後にタップ<br>※返却確認のため必ず押してね
+                        </div>
                         <button id="completionBtn" class="completion-btn">
                             🔑 深夜キーを返却し、ポストを閉めました ✅
                         </button>
@@ -442,16 +436,10 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="thank-you">
-                <h3>🙏 ありがとうございました</h3>
-                <p>またのご利用をお待ちしております</p>
-            </div>
         </div>
     </div>
     
     <script>
-        // パスワード保護機能
         const correctPassword = "0621";
         
         function checkPassword() {
@@ -460,7 +448,6 @@
             if (password === correctPassword) {
                 document.getElementById('main-content').style.display = 'block';
                 document.getElementById('password-message').style.display = 'none';
-                // パスワードをセッションに保存（ブラウザを閉じるまで有効）
                 sessionStorage.setItem('authenticated', 'true');
             } else if (password !== null) {
                 alert("パスワードが正しくありません。");
@@ -468,9 +455,7 @@
             }
         }
         
-        // ページ読み込み時の処理
         window.addEventListener('load', function() {
-            // 既に認証済みかチェック
             if (sessionStorage.getItem('authenticated') === 'true') {
                 document.getElementById('main-content').style.display = 'block';
                 document.getElementById('password-message').style.display = 'none';
@@ -480,7 +465,6 @@
                 checkPassword();
             }
             
-            // フェードイン効果
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.5s ease-in-out';
             setTimeout(() => {
@@ -488,60 +472,32 @@
             }, 100);
         });
         
-        // 完了ボタンの処理
         document.getElementById('completionBtn').addEventListener('click', function() {
-            // 完了情報を収集
             const completionData = {
-                timestamp: new Date().toLocaleString('ja-JP', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    timeZone: 'Asia/Tokyo'
-                }),
+                timestamp: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
                 userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                screenResolution: screen.width + 'x' + screen.height,
-                viewportSize: window.innerWidth + 'x' + window.innerHeight,
-                referrer: document.referrer || 'Direct Access'
             };
 
-            // Formspreeに送信
             const formData = new FormData();
             formData.append('完了日時', completionData.timestamp);
             formData.append('ブラウザ情報', completionData.userAgent);
-            formData.append('端末情報', completionData.platform);
-            formData.append('言語設定', completionData.language);
-            formData.append('画面解像度', completionData.screenResolution);
-            formData.append('表示サイズ', completionData.viewportSize);
-            formData.append('アクセス元', completionData.referrer);
             formData.append('_subject', 'ひろこばぁちゃんのスペース - 深夜キー返却完了通知');
 
-            // Formspreeに送信
             fetch('https://formspree.io/f/myzjnklr', {
                 method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    console.log('送信完了');
-                }
-            }).catch(error => {
-                console.log('送信エラー:', error);
+                body: formData,
+                headers: { 'Accept': 'application/json' }
             });
 
-            // ボタンを無効化
             this.disabled = true;
             this.style.background = '#6c757d';
             this.innerHTML = '✅ 返却完了済み';
+            
+            document.querySelector('.attention-text').style.display = 'none';
 
-            // 完了メッセージを表示
             document.getElementById('completionMessage').style.display = 'block';
         });
         
-        // タッチデバイスでのユーザビリティ向上
         document.addEventListener('touchstart', function() {}, {passive: true});
     </script>
 </body>
